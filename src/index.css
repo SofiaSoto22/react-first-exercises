@@ -1,0 +1,22 @@
+
+body {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+
+}
+.darkModeBttn {
+  margin-top: 20px;
+  border-radius: 5px;
+  color: darkblue;
+  font-Weight: bold;
+}
+#priority{
+  background-color: rgb(23, 134, 23);
+}
+#important{
+  background-color: orange;
+}
+#inmind{
+  background-color: aqua;
+}
