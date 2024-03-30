@@ -4,27 +4,12 @@ export default function Todo() {
   const [task, setTask] = useState("");
   const [list, setList] = useState([]);
   const [doneCount, setDoneCount] = useState(0);
-  const [color, setColor] = useState(null);
+  const [color, setColor] = useState("");
 
-  useEffect(() => {
-    const items = [
-      {
-        name: "meeting",
-        id: 0,
-        background: "grey",
-      },
-      {
-        name: "gym",
-        id: 1,
-        background: "grey",
-      },
-    ];
-    setList(items);
-  }, []);
   function Addtask() {
     if (task !== "") {
       let newList = [...list];
-      let maxId = Math.max(...newList.map((o) => o.id));
+      let maxId = list.length ? Math.max(...newList.map((o) => o.id)) : 0;
       let newTask = {
         name: task,
         id: maxId + 1,
@@ -32,13 +17,41 @@ export default function Todo() {
       };
       newList.push(newTask);
       setList(newList);
-      console.log(newList.length);
+      //once the list is rendered, keep the input space empty
       setTask("");
     }
   }
   function updateDoneCount(number) {
     setDoneCount(doneCount + number);
   }
+  //as we can't directly modify the list we create a copy. then map all the array. obj corresponds to each iteration.
+  //we want to render a list with the names that are not the same that the ones clicked, so tasks not done yet.
+  function functionRemove(todoItemName, isToggled) {
+    console.log(todoItemName);
+    let allList = [...list];
+    allList = allList.filter((obj) => {
+      return obj.name !== todoItemName;
+    });
+    //update de count when toggled. otherwise we get negative numbers when it should be 0. if toggle is true, minus 1 task
+    if (isToggled) {
+      updateDoneCount(-1);
+    }
+
+    setList(allList);
+  }
+  function functionDuplicate(todoItemName) {
+    console.log(todoItemName);
+    let newList = [...list];
+    let maxId = list.length ? Math.max(...newList.map((o) => o.id)) : 0;
+    let newTask = {
+      name: todoItemName,
+      id: maxId + 1,
+      background: color,
+    };
+    newList.push(newTask);
+    setList(newList);
+  }
+
   //let length = list.length;
 
   return (
@@ -57,23 +70,27 @@ export default function Todo() {
       </button>
 
       <select onChange={(e) => setColor(e.target.value)} value={color}>
-        <option id="priority" value="green">
+        <option value="">select priority</option>
+        <option id="priority" value="#86f386">
           Priority
         </option>
-        <option id="important" value="orange">
+        <option id="important" value="#f1be5d">
           important
         </option>
-        <option id="inmind" value="blue">
+        <option id="inmind" value="#8dbdbd">
           Keep in mind
         </option>
       </select>
 
       <div>
-        {list.map((item, index) => (
+        {list.map((item) => (
           <TodoItem
+            key={item.id}
             todoItemName={item.name}
             background={item.background}
-            callback={updateDoneCount}
+            callbackUpdateCount={updateDoneCount}
+            callbackRemove={functionRemove}
+            callbackDuplicate={functionDuplicate}
           ></TodoItem>
         ))}
       </div>

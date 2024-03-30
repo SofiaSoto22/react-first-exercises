@@ -1,11 +1,18 @@
 import { useState } from "react";
-export default function TodoItem({ todoItemName, background, callback }) {
+
+export default function TodoItem({
+  todoItemName,
+  background,
+  callbackUpdateCount,
+  callbackRemove,
+  callbackDuplicate,
+}) {
   const [isToggled, setIsToggled] = useState(false);
   const handleToggle = () => {
     if (isToggled) {
-      callback(-1);
+      callbackUpdateCount(-1);
     } else {
-      callback(1);
+      callbackUpdateCount(1);
     }
     setIsToggled(!isToggled);
   };
@@ -23,6 +30,10 @@ export default function TodoItem({ todoItemName, background, callback }) {
       >
         {todoItemName}
       </span>
+      <button onClick={() => callbackRemove(todoItemName, isToggled)}>
+        Remove
+      </button>
+      <button onClick={() => callbackDuplicate(todoItemName)}>Duplicate</button>
     </div>
   );
 }

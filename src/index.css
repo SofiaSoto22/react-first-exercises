@@ -12,11 +12,11 @@ body {
   font-Weight: bold;
 }
 #priority{
-  background-color: rgb(23, 134, 23);
+  background-color: #86f386;
 }
 #important{
-  background-color: orange;
+  background-color: #f1be5d;
 }
 #inmind{
-  background-color: aqua;
+  background-color: #8dbdbd;
 }
